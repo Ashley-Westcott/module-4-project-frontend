@@ -1,26 +1,32 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import LoginPage from './containers/LoginPage'
+import TaskPage from './containers/TaskPage'
+import TaskCreationPage from './containers/TaskCreationPage'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends React.Component{
+
+  state = {
+    tasks: []
+  }
+
+  componentDidMount(){
+    fetch('http://localhost:3000/tasks')
+      .then(response => response.json())
+      .then(data => {this.setState({
+        tasks: data
+        })
+      })
+  }
+
+  render(){
+    console.log(this.state.tasks)
+    return (
+      <div>
+        <LoginPage />
+        <TaskPage tasks={this.state.tasks}/>
+        <TaskCreationPage />
+      </div>
+    )
+  }
 }
-
-export default App;
